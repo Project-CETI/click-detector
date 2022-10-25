@@ -1,0 +1,30 @@
+[System]
+Name='Coda_validation_via_duration'
+Type='mamdani'
+Version=2.0
+NumInputs=1
+NumOutputs=1
+NumRules=2
+AndMethod='min'
+OrMethod='max'
+ImpMethod='min'
+AggMethod='max'
+DefuzzMethod='centroid'
+
+[Input1]
+Name='duration'
+Range=[0 1]
+NumMFs=2
+MF1='T':'zmf',[0.144820295983087 0.388]
+MF2='Coda':'smf',[0.1638 0.235729386892178]
+
+[Output1]
+Name='output1'
+Range=[0 1]
+NumMFs=2
+MF1='T':'trimf',[0.00319 0.254756871035941 0.5]
+MF2='Coda':'trimf',[0.498 0.738900634249471 0.998]
+
+[Rules]
+2, 2 (1) : 1
+1, 1 (1) : 1

@@ -1,0 +1,54 @@
+[System]
+Name='Coda_detector_revised2'
+Type='mamdani'
+Version=2.0
+NumInputs=3
+NumOutputs=1
+NumRules=10
+AndMethod='min'
+OrMethod='max'
+ImpMethod='min'
+AggMethod='max'
+DefuzzMethod='centroid'
+
+[Input1]
+Name='frequency'
+Range=[2 22]
+NumMFs=3
+MF1='Coda':'gbellmf',[3.61 98.2 7.79228329809725]
+MF2='T':'smf',[7.5 13.3678516228748]
+MF3='T2':'gbellmf',[1.96443974630021 4.71 2.34]
+
+[Input2]
+Name='duration'
+Range=[0 1]
+NumMFs=2
+MF1='Coda':'gauss2mf',[0.0393959695803946 0.110993657505285 0.0148 0.957]
+MF2='T':'zmf',[0.0670401854714065 0.183]
+
+[Input3]
+Name='Er'
+Range=[0 50]
+NumMFs=3
+MF1='T':'zmf',[1.84989429175475 14.5]
+MF2='Coda':'gbellmf',[9.32727272727273 13.5 11.6]
+MF3='T2':'smf',[16.1 29.968287526427]
+
+[Output1]
+Name='output1'
+Range=[0 1]
+NumMFs=2
+MF1='T':'zmf',[0.272142494714588 0.605442494714588]
+MF2='Coda':'smf',[0.400888372093023 0.734188372093023]
+
+[Rules]
+1 1 2, 2 (1) : 1
+2 2 1, 1 (1) : 1
+2 2 2, 1 (1) : 1
+1 2 1, 1 (1) : 1
+1 2 3, 1 (1) : 1
+2 1 1, 1 (1) : 1
+2 1 3, 1 (1) : 1
+2 1 2, 1 (1) : 1
+3 1 2, 1 (1) : 1
+3 1 1, 1 (1) : 1
