@@ -1,12 +1,9 @@
 clear all; clc;
 
-    Program_folder=pwd;                                     % current folder
-    Data_folder=Program_folder;             % folder that contains the recordings
-    cd(Data_folder);
-    files = dir('SW*.flac');
-
-    Results_folder=Data_folder;             % folder that contains the recordings
-
+Program_folder=pwd;                                     % current folder
+files = dir('SW*.flac');
+% files = dir('AMAR*.flac');
+% files = dir('10M*.wav');
 
     %% Pick Detector
 
@@ -60,11 +57,19 @@ clear all; clc;
             buffer_index=0; Gather_TOA=[]; 
 
             for Buffer_ind=1:NOI
-                Y_filtered=bandpass(Y_decimated(int32((Buffer_ind-1)*T+1):int32((Buffer_ind-1)*T+T)),[F_low, F_high],F_ds);     % Aply band pass filter and extract buffer             
-                tic
+                Y_filtered=bandpass(Y_decimated(int32((Buffer_ind-1)*T+1):int32((Buffer_ind-1)*T+T)),[F_low, F_high],F_ds);     % Aply band pass filter and extract buffer                             
                 TOA=Run_Detector_server(Y_filtered,Fs,F_ds,Detector_flag,Plot_flag);  % Run detection
-                toc
+                Gather_TOA=[Gather_TOA (Buffer_ind-1)*T_sec+TOA];
             end
+            
+            if Other_whale_Detector_flag
+                DetectOtherWhale=find_whale_neighbours(Y,Gather_TOA,Fs); % Run 'other whale' detector
+                if ~isempty(DetectOtherWhale)
+                    writematrix(DetectOtherWhale',filesave); % Save time of arrivals of the detected 'other whales clicks'
+                end
+            elseif ~isempty(Gather_TOA)               
+                 writematrix(Gather_TOA',filesave);  % Save time of arrivals of the detected clicks                                                              
+            end 
         end
         
     end
