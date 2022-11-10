@@ -1,13 +1,17 @@
 function [Send_seq,Send_seq2]=ICI_extract_Sequence2(time,ey_norm,locs,pks,Y_zoom,F_ds,consistency_T,ICI_max,ICI_min,Th)
-%  v=1;
+% %  v=1;
 % % locs=sort(MP_t(cell2mat(C_inds(v))));
 % % pks=MP_p(cell2mat(C_inds(v)));
 % locs=MP_t;
 % pks=MP_p;
+
+% [locs,Id]=sort(L_tag);
+% pks=P_tag(Id);
 % Th=Th_echo;
 % ICI_max=ICI_max_echo;
 % ICI_min=ICI_min_echo;
 % ICI_max=1.8;
+
 
     Final_seq={}; Final_ICI={}; Final_L={};  Compare=[];  Candidate_Trains={}; Send_seq=[];
     Send_seq2=[]; Compare2=[];  Candidate_Trains2={};
@@ -161,6 +165,19 @@ function [Send_seq,Send_seq2]=ICI_extract_Sequence2(time,ey_norm,locs,pks,Y_zoom
     
     Send_seq2=cell2mat(Send_seq2);
     end
+
+    %% Extract the taged clicks
+% %         peaks_tag=find(Compare==max(Compare));
+%         for i=1:length(Compare)
+%             Score(i)=mean(pks(cell2mat(Candidate_Trains(i))));           
+%         end
+%         
+%         Eli=find(Compare<10); Score(Eli)=0;
+%         Tag_choice=find(Score==max(Score));
+%         if Score(Tag_choice(1))>0.5
+%             Send_seq2=[];
+%             Send_seq2=cell2mat(Candidate_Trains(Tag_choice(1)));
+%         end
+    
 end
     
-
