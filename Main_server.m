@@ -5,9 +5,9 @@ files = dir('twowhales*.flac');
  
     %% Pick Detector
 
-    Detector_flag=0; % 1- apply coda detector | 0- apply echolocation clicks detector
+    Detector_flag=0; % customized for buoy recievers: 1- apply coda detector | 0- apply echolocation clicks detector
     Plot_flag=1;     % 1- show detection figures | 0- dont show
-    Tag_flag=1;    % 1- apply transient detector suitable for Dtags | apply IPI detector customized for bouy data
+    Tag_flag=1;    % 1- customized for Dtags: set to 1 for recordings from tags.
     Error_flag=length(files);
 
     %% Check filename:
