@@ -1,4 +1,4 @@
-function TOA=Run_Detector_server(Y_filtered,Fs,F_ds,Detector_flag,Plot_flag)
+function [TOA,TOA_tag,TOA_other]=Run_Detector_server(Y_filtered,Fs,F_ds,Detector_flag,Plot_flag,Tag_flag)
 %function TOA=Run_Detector(Detector_flag,F_ds,Enhanced_sampled,Detection_flag)
 %
 %Description:
@@ -45,15 +45,22 @@ function TOA=Run_Detector_server(Y_filtered,Fs,F_ds,Detector_flag,Plot_flag)
         fois_echo= linspace(2e3,18e3,100);          % set spectogram bounds
         Th_echo=0.7;                                % set threshold for maximal allowed diversity in click's amplitude
         Gather_TOA=[];
- 
+        TOA=[];
+        TOA_tag=[];
+        TOA_other=[];
+        
        %% Select and run detector
        
         if Detector_flag
             [Coda_save,TOA]=Coda_click_Detector(SNR_window_coda,SNR_thresh_coda,F_ds,Y_filtered,Plot_flag,MP_thresh,W_seg,Dt_coda,fois_coda,wind,ICI_max_coda,ICI_min_coda,Th_coda,E_th,consistency_T_coda);
             Codas_info={Coda_save};       
         else
+            if Tag_flag
+            [TOA_tag,TOA_other]=EL_click_Detector_tags(F_ds,Y_filtered,Plot_flag,consistency_T_echo,ICI_max_echo,ICI_min_echo,Th_echo,MP_thresh,W_seg);
+            else
             detections=EL_click_Detector_server(SNR_window_echo,SNR_thresh_echo,Fs,F_ds,Y_filtered,Plot_flag,MP_thresh,W_seg,consistency_T_echo,ICI_max_echo,ICI_min_echo,Th_echo); 
             TOA=cell2mat(detections);
+            end                           
         end
 
     
