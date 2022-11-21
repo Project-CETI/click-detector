@@ -1,5 +1,4 @@
 function [TOA,TOA_tag,TOA_other]=Run_Detector_server(Y_filtered,Fs,F_ds,Detector_flag,Plot_flag,Tag_flag)
-%function TOA=Run_Detector(Detector_flag,F_ds,Enhanced_sampled,Detection_flag)
 %
 %Description:
 %This function gets a signal buffer of M secons and outputs a vector
