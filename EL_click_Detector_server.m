@@ -1,8 +1,5 @@
 function TOA=EL_click_Detector_server(SNR_window,SNR_thresh,Fs,F_ds,Y_filtered,Plot_flag,MP_thresh,W_seg,consistency_T,ICI_max_echo,ICI_min_echo,Th_echo)
 
-% SNR_window=SNR_window_echo;
-% SNR_thresh=SNR_thresh_echo;
-% consistency_T=consistency_T_echo;
 
 
         FA=zeros(9,20);
@@ -36,6 +33,7 @@ function TOA=EL_click_Detector_server(SNR_window,SNR_thresh,Fs,F_ds,Y_filtered,P
             end
         end
 
+
         if length(Pks)>60
            [Pks2,I] = maxk(Pks,60);
            Locs2=Locs(I);
@@ -43,21 +41,24 @@ function TOA=EL_click_Detector_server(SNR_window,SNR_thresh,Fs,F_ds,Y_filtered,P
            Locs=Locs2;
         end
 
-        if length(Locs)>2 && length(Locs)<100
-           %% Show plots for the transient detection stage
-
         if Plot_flag==1
             figure;set(gcf, 'Position', get(0,'Screensize'));
             subplot(4,1,1); plot(t_zoom,Y_zoom); xlabel('time [sec]'); ylabel('Amplitude'); title('Raw signal');
             subplot(4,1,2); plot(time,ey_norm); hold on; 
             xlabel('time [sec]'); ylabel('TKEO'); ylim([0 1]);
+        end
+
+        if length(Locs)>2 && length(Locs)<100
+           %% Show plots for the transient detection stage
+
+        if Plot_flag==1
             hold on; plot(Locs,Pks,'x')    
         end
         
 
             %% Multipulse Detection Stage
 
-            [MP_t,MP_p,IPI]=Multipulse_locs_echos(Y_zoom,ey_norm,Locs,Pks,Fs,F_ds,W_seg,MP_thresh,Plot_flag);  % Run multipulse detector
+            [MP_t,MP_p,IPI]=Multipulse_locs_echos(Y_zoom,ey_norm,Locs,Pks,F_ds,W_seg,MP_thresh,Plot_flag);  % Run multipulse detector
         
 
           if length(IPI)>2
@@ -141,12 +142,17 @@ function TOA=EL_click_Detector_server(SNR_window,SNR_thresh,Fs,F_ds,Y_filtered,P
                                 MP_t(eliminate_pks)=[];
                                 MP_p(eliminate_pks)=[];
                             end
-                           [~,Final_seq]=ICI_extract_Sequence2(time,ey_norm,MP_t,MP_p,Y_zoom,F_ds,consistency_T,ICI_max_echo,ICI_min_echo,Th_echo);   % Run click trains detector 
-                           Detected_Echos=MP_t(Final_seq);
-                           Detected_Echos_pks=MP_p(Final_seq);
-                           TOA={Detected_Echos};
-%                       end
-%                     end
+                            if ~isempty(MP_t)
+                               Final_seq=[];
+                               [~,Final_seq]=ICI_extract_Sequence2(time,ey_norm,MP_t,MP_p,Y_zoom,F_ds,consistency_T,ICI_max_echo,ICI_min_echo,Th_echo);   % Run click trains detector 
+                               Detected_Echos=MP_t(Final_seq);
+                               Detected_Echos_pks=MP_p(Final_seq);
+                               TOA={Detected_Echos};
+                            else
+                               Detected_Echos=[];
+                               Detected_Echos_pks=[];
+                               TOA={Detected_Echos};                                                              
+                           end
 %                                         
 %               
               if Plot_flag
