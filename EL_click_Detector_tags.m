@@ -1,13 +1,11 @@
 function [TOA_tag,TOA_other]=EL_click_Detector_tags(F_ds,Y_filtered,Plot_flag,consistency_T,ICI_max_echo,ICI_min_echo,Th_echo,MP_thresh,W_seg)
 
-% SNR_window=SNR_window_echo;
-% SNR_thresh=SNR_thresh_echo;
-% consistency_T=consistency_T_echo;
 
 TOA_tag=[]; TOA_other=[];
 locs=[]; pks=[];
 L_other=[]; L_tag=[];
 P_other=[]; P_tag=[];
+Valid_flag=0;
         
         Y_zoom=Y_filtered;     % Aply band pass filter               
         t_zoom=[0:1/F_ds:(1/F_ds)*(length(Y_zoom)-1)];                                              % Time calls of the analyzed signal [sec]
