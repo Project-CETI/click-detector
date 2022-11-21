@@ -1,7 +1,9 @@
 clear all; clc;
 
 Program_folder=pwd;
+% files = dir('twowhales*.flac');
 files = dir('twowhales*.flac');
+
  
     %% Pick Detector
 
@@ -59,13 +61,14 @@ files = dir('twowhales*.flac');
             buffer_index=0; 
             Gather_TOA=[]; 
             TOA_other_whale=[];
+            TOA_other=[];
 
             for Buffer_ind=1:NOI
                 Y_filtered=bandpass(Y_decimated(int32((Buffer_ind-1)*T+1):int32((Buffer_ind-1)*T+T)),[F_low, F_high],F_ds);     % Aply band pass filter and extract buffer                             
                 if Tag_flag
                     [~,TOA,TOA_other]=Run_Detector_server(Y_filtered,Fs,F_ds,Detector_flag,Plot_flag,Tag_flag);  % Run detection
                 else
-                    [TOA,~,~]=Run_Detector_server(Y_filtered,Fs,F_ds,Detector_flag,Plot_flag);  % Run detection                    
+                    [TOA,~,~]=Run_Detector_server(Y_filtered,Fs,F_ds,Detector_flag,Plot_flag,Tag_flag);  % Run detection                    
                 end
                 Gather_TOA=[Gather_TOA (Buffer_ind-1)*T_sec+sort(TOA)];
                 TOA_other_whale=[TOA_other_whale (Buffer_ind-1)*T_sec+sort(TOA_other)];
